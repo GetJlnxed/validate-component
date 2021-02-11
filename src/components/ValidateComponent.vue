@@ -21,8 +21,16 @@ export default {
   methods: {
     validate() {
       console.log(`validating - ${this.num}`);
-      this.$children.forEach((child) => {
-        child.validate();
+      this.activateChildren(this.$children);
+    },
+    activateChildren(childrenArray) {
+      childrenArray.forEach((child) => {
+        if (child.$options._componentTag === "validate-component") {
+          child.validate();
+        }
+        if (child.$children.length !== 0) {
+          this.activateChildren(child.$children);
+        }
       });
     },
   },
